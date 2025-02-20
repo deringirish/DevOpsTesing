@@ -1,2 +1,2 @@
-Here is some sample or random line of text.
-I am adding the second line of content using nano filename.txt command
+This is the line added using echo command
+Second line using echo command
