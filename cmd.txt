@@ -1,3 +1,6 @@
+aws iam get-role --role-name derin_role
+
+
 def lambda_handler(event, context):
     return {
         'statusCode': 200,
