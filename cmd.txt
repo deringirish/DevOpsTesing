@@ -1,0 +1,49 @@
+def lambda_handler(event, context):
+    return {
+        'statusCode': 200,
+        'body': json.dumps("Hello from AWS Lambda!")
+    }
+
+
+
+
+
+
+import boto3
+
+lambda_client = boto3.client('lambda', region_name="us-east-1")
+function_name = "MyLambdaFunction"
+role_arn = "lambdaarn"
+
+with open("function.zip", "rb") as f:
+    zip_content = f.read()
+
+
+response = lambda_client.create_function(
+    FunctionName=function_name,
+    Runtime="python3.8",
+    Role=role_arn,
+    Handler="lambda_function.lambda_handler",
+    Code={'ZipFile': zip_content},
+    Description="My first Lambda function using Boto3",
+    Timeout=10,
+    MemorySize=128
+)
+
+print("Lambda Function Created:", response)
+
+
+
+
+import boto3
+import json
+
+lambda_client = boto3.client('lambda', region_name="us-east-1")
+
+response = lambda_client.invoke(
+    FunctionName="MyLambdaFunction",
+    InvocationType="RequestResponse",
+    Payload=json.dumps({})
+)
+
+print(response['Payload'].read().decode("utf-8"))

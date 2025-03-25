@@ -1,0 +1,51 @@
+import json
+import boto3
+
+def lambda_handler(event, context):
+    print("Event Received:", json.dumps(event, indent=2))
+    bucket_name = event['Records'][0]['s3']['bucket']['name']
+    object_key = event['Records'][0]['s3']['object']['key']
+    
+    return {
+        'statusCode': 200,
+        'body': json.dumps(f"Processing file {object_key} in bucket {bucket_name}")
+    }
+
+
+
+
+{
+  "Comment": "A simple Step Function to process S3 files",
+  "StartAt": "ProcessS3File",
+  "States": {
+    "ProcessS3File": {
+      "Type": "Task",
+      "Resource": "lambda_arn",
+      "End": true
+    }
+  }
+}
+
+
+
+
+import json
+import boto3
+
+def lambda_handler(event, context):
+    print("Event Received:", json.dumps(event, indent=2)) 
+    try:
+        bucket_name = event['Records'][0]['s3']['bucket']['name']
+        object_key = event['Records'][0]['s3']['object']['key']
+        print(f"Processing file: {object_key} in bucket: {bucket_name}")
+
+        return {
+            'statusCode': 200,
+            'body': f"Processing file {object_key} in bucket {bucket_name}"
+        }
+    except Exception as e:
+        print("Error:", str(e)) 
+        return {
+            'statusCode': 500,
+            'body': "Error processing S3 event"
+        }
